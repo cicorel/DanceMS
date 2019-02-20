@@ -1,13 +1,13 @@
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using Microsoft.Azure.Mobile.Server;
 using Microsoft.Azure.Mobile.Server.Tables;
-using Backend.DataObjects;
+using DanceMSService.DataObjects;
 
-namespace Backend.Models
+namespace DanceMSService.Models
 {
-    public class MobileServiceContext : DbContext
+    public class DanceMSContext : DbContext
     {
         // You can add custom code to this file. Changes will not be overwritten.
         // 
@@ -15,16 +15,12 @@ namespace Backend.Models
         // automatically whenever you change your model schema, please use data migrations.
         // For more information refer to the documentation:
         // http://msdn.microsoft.com/en-us/data/jj591621.aspx
-        //
-        // To enable Entity Framework migrations in the cloud, please ensure that the 
-        // service name, set by the 'MS_MobileServiceName' AppSettings in the local 
-        // Web.config, is the same as the service name when hosted in Azure.
 
         private const string connectionStringName = "Name=MS_TableConnectionString";
 
-        public MobileServiceContext() : base(connectionStringName)
+        public DanceMSContext() : base(connectionStringName)
         {
-        }
+        } 
 
         public DbSet<TodoItem> TodoItems { get; set; }
 
@@ -35,4 +31,5 @@ namespace Backend.Models
                     "ServiceTableColumn", (property, attributes) => attributes.Single().ColumnType.ToString()));
         }
     }
+
 }

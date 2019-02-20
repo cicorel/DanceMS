@@ -1,9 +1,9 @@
-﻿using Microsoft.Owin;
+using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartup(typeof(Backend.Startup))]
+[assembly: OwinStartup(typeof(DanceMSService.Startup))]
 
-namespace Backend
+namespace DanceMSService
 {
     public partial class Startup
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Azure.Mobile.Server;
 
-namespace Backend.DataObjects
+namespace DanceMSService.DataObjects
 {
     public class TodoItem : EntityData
     {
