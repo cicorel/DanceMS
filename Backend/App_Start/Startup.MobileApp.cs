@@ -6,11 +6,11 @@ using System.Web.Http;
 using Microsoft.Azure.Mobile.Server;
 using Microsoft.Azure.Mobile.Server.Authentication;
 using Microsoft.Azure.Mobile.Server.Config;
-using DanceMSService.DataObjects;
-using DanceMSService.Models;
+using dancemsService.DataObjects;
+using dancemsService.Models;
 using Owin;
 
-namespace DanceMSService
+namespace dancemsService
 {
     public partial class Startup
     {
@@ -26,10 +26,10 @@ namespace DanceMSService
                 .ApplyTo(config);
 
             // Use Entity Framework Code First to create database tables based on your DbContext
-            Database.SetInitializer(new DanceMSInitializer());
+            Database.SetInitializer(new dancemsInitializer());
 
             // To prevent Entity Framework from modifying your database schema, use a null database initializer
-            // Database.SetInitializer<DanceMSContext>(null);
+            // Database.SetInitializer<dancemsContext>(null);
 
             MobileAppSettingsDictionary settings = config.GetMobileAppSettingsProvider().GetMobileAppSettings();
 
@@ -49,9 +49,9 @@ namespace DanceMSService
         }
     }
 
-    public class DanceMSInitializer : CreateDatabaseIfNotExists<DanceMSContext>
+    public class dancemsInitializer : CreateDatabaseIfNotExists<dancemsContext>
     {
-        protected override void Seed(DanceMSContext context)
+        protected override void Seed(dancemsContext context)
         {
             List<TodoItem> todoItems = new List<TodoItem>
             {

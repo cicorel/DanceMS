@@ -4,17 +4,17 @@ using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.OData;
 using Microsoft.Azure.Mobile.Server;
-using DanceMSService.DataObjects;
-using DanceMSService.Models;
+using dancemsService.DataObjects;
+using dancemsService.Models;
 
-namespace DanceMSService.Controllers
+namespace dancemsService.Controllers
 {
     public class TodoItemController : TableController<TodoItem>
     {
         protected override void Initialize(HttpControllerContext controllerContext)
         {
             base.Initialize(controllerContext);
-            DanceMSContext context = new DanceMSContext();
+            dancemsContext context = new dancemsContext();
             DomainManager = new EntityDomainManager<TodoItem>(context, Request);
         }
 

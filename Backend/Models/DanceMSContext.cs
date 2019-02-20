@@ -3,11 +3,11 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using Microsoft.Azure.Mobile.Server;
 using Microsoft.Azure.Mobile.Server.Tables;
-using DanceMSService.DataObjects;
+using dancemsService.DataObjects;
 
-namespace DanceMSService.Models
+namespace dancemsService.Models
 {
-    public class DanceMSContext : DbContext
+    public class dancemsContext : DbContext
     {
         // You can add custom code to this file. Changes will not be overwritten.
         // 
@@ -18,7 +18,7 @@ namespace DanceMSService.Models
 
         private const string connectionStringName = "Name=MS_TableConnectionString";
 
-        public DanceMSContext() : base(connectionStringName)
+        public dancemsContext() : base(connectionStringName)
         {
         } 
 
