@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DanceMS.Abstractions;
+using DanceMS.UWP.Services;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -97,5 +99,52 @@ namespace DanceMS.UWP
             //TODO: Save application state and stop any background activity
             deferral.Complete();
         }
+
+        protected override void OnActivated(IActivatedEventArgs e)
+        {
+            if (e.Kind == ActivationKind.Protocol)
+            {
+                var protocolArgs = e as ProtocolActivatedEventArgs;
+
+                Frame rootFrame = Window.Current.Content as Frame;
+
+                // Do not repeat app initialization when the Window already has content,
+                // just ensure that the window is active
+                if (rootFrame == null)
+                {
+                    // Create a Frame to act as the navigation context and navigate to the first page
+                    rootFrame = new Frame();
+                    rootFrame.NavigationFailed += OnNavigationFailed;
+
+                    Xamarin.Forms.Forms.Init(e);
+
+                    rootFrame.Navigate(typeof(MainPage));
+
+                    // Place the frame in the current Window
+                    Window.Current.Content = rootFrame;
+                }
+
+                if (rootFrame.Content == null)
+                {
+                    // When the navigation stack isn't restored navigate to the first page,
+                    // configuring the new page by passing required information as a navigation
+                    // parameter
+                    rootFrame.Navigate(typeof(MainPage), string.Empty);
+                }
+
+                if (protocolArgs.Uri.Scheme == "dancems")
+                {
+                    var authentication = ((UWPLoginProvider)Xamarin.Forms.DependencyService.Get<ILoginProvider>());
+                    if (authentication == null)
+                    {
+                        throw new InvalidOperationException("Make sure the ServiceLocator has an instance of IAuthenticator.");
+                    }
+                    authentication.ContinueLogin(protocolArgs.Uri);
+                }
+
+                base.OnActivated(e);
+            }
+        }
+
     }
 }
