@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using DanceMS.Abstractions;
+using DanceMS.Helpers;
 using DanceMS.Models;
 using Xamarin.Forms;
 
@@ -11,24 +12,41 @@ namespace DanceMS.ViewModels
 {
     public class TaskListViewModel : BaseViewModel
     {
+        ICloudService cloudService;
+
         public TaskListViewModel()
         {
+            Debug.WriteLine("In TaskListViewMOdel");
+            cloudService = ServiceLocator.Instance.Resolve<ICloudService>();
+            Table = cloudService.GetTable<TodoItem>();
+
             Title = "Task List";
-            RefreshList();
+            items.CollectionChanged += this.OnCollectionChanged;
+
+            RefreshCommand = new Command(async () => await ExecuteRefreshCommand());
+            AddNewItemCommand = new Command(async () => await ExecuteAddNewItemCommand());
+
+            // Execute the refresh command
+            RefreshCommand.Execute(null);
         }
-        /// <summary>
-        /// This Collection holds the TodoItems. In case of changes in the collection, it can send an event that it has been changed
-        /// </summary>
-        ObservableCollection<TodoItem> items = new ObservableCollection<TodoItem>();
-        public ObservableCollection<TodoItem> Items
+
+        public ICloudTable<TodoItem> Table { get; set; }
+        public Command RefreshCommand { get; }
+        public Command AddNewItemCommand { get; }
+        public Command LogoutCommand { get; }
+
+        void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            Debug.WriteLine("[TaskList] OnCollectionChanged: Items have changed");
+        }
+
+        ObservableRangeCollection<TodoItem> items = new ObservableRangeCollection<TodoItem>();
+        public ObservableRangeCollection<TodoItem> Items
         {
             get { return items; }
             set { SetProperty(ref items, value, "Items"); }
         }
 
-        /// <summary>
-        /// Selected item. If we press on it, it will push a new page for details
-        /// </summary>
         TodoItem selectedItem;
         public TodoItem SelectedItem
         {
@@ -44,40 +62,32 @@ namespace DanceMS.ViewModels
             }
         }
 
-        /// <summary>
-        /// Refresh command
-        /// </summary>
-        Command refreshCmd;
-        public Command RefreshCommand => refreshCmd ?? (refreshCmd = new Command(async () => await ExecuteRefreshCommand()));
-
         async Task ExecuteRefreshCommand()
         {
-            if (IsBusy) return;
+            if (IsBusy)
+                return;
             IsBusy = true;
 
             try
             {
-                var table = App.CloudService.GetTable<TodoItem>();
-                var list = await table.ReadAllItemsAsync();
-                Items.Clear();
-                foreach (var item in list)
-                    Items.Add(item);
+                var identity = await cloudService.GetIdentityAsync();
+                if (identity != null)
+                {
+                    var name = identity.UserClaims.FirstOrDefault(c => c.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name")).Value;
+                    Title = $"Tasks for {name}";
+                }
+                var list = await Table.ReadAllItemsAsync();
+                Items.ReplaceRange(list);
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"[TaskList] Error loading items: {ex.Message}");
+                await Application.Current.MainPage.DisplayAlert("Items Not Loaded", ex.Message, "OK");
             }
             finally
             {
                 IsBusy = false;
             }
         }
-
-        /// <summary>
-        /// Add new command. Open a new page for adding todo items
-        /// </summary>
-        Command addNewCmd;
-        public Command AddNewItemCommand => addNewCmd ?? (addNewCmd = new Command(async () => await ExecuteAddNewItemCommand()));
 
         async Task ExecuteAddNewItemCommand()
         {
@@ -91,7 +101,7 @@ namespace DanceMS.ViewModels
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"[TaskList] Error in AddNewItem: {ex.Message}");
+                await Application.Current.MainPage.DisplayAlert("Item Not Added", ex.Message, "OK");
             }
             finally
             {
@@ -99,10 +109,6 @@ namespace DanceMS.ViewModels
             }
         }
 
-        /// <summary>
-        /// Async taks for refreshing list
-        /// </summary>
-        /// <returns></returns>
         async Task RefreshList()
         {
             await ExecuteRefreshCommand();

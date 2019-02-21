@@ -1,4 +1,5 @@
-﻿using Microsoft.WindowsAzure.MobileServices;
+﻿using DanceMS.Models;
+using Microsoft.WindowsAzure.MobileServices;
 using System.Threading.Tasks;
 
 namespace DanceMS.Abstractions
@@ -7,5 +8,6 @@ namespace DanceMS.Abstractions
     {
         ICloudTable<T> GetTable<T>() where T : TableData;
         Task<MobileServiceUser> LoginAsync(MobileServiceAuthenticationProvider provider);
+        Task<AppServiceIdentity> GetIdentityAsync();
     }
 }
