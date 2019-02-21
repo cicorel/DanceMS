@@ -4,10 +4,10 @@ using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.OData;
 using Microsoft.Azure.Mobile.Server;
-using dancemsService.DataObjects;
-using dancemsService.Models;
+using DanceMSBackend.DataObjects;
+using DanceMSBackend.Models;
 
-namespace dancemsService.Controllers
+namespace DanceMSBackend.Controllers
 {
     public class TodoItemController : TableController<TodoItem>
     {

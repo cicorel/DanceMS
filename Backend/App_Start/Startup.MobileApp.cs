@@ -6,11 +6,11 @@ using System.Web.Http;
 using Microsoft.Azure.Mobile.Server;
 using Microsoft.Azure.Mobile.Server.Authentication;
 using Microsoft.Azure.Mobile.Server.Config;
-using dancemsService.DataObjects;
-using dancemsService.Models;
+using DanceMSBackend.DataObjects;
+using DanceMSBackend.Models;
 using Owin;
 
-namespace dancemsService
+namespace DanceMSBackend
 {
     public partial class Startup
     {

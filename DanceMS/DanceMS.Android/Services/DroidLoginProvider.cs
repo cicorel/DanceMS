@@ -16,9 +16,9 @@ namespace DanceMS.Droid.Services
             this.context = context;
         }
 
-        public async Task<MobileServiceUser> LoginAsync(MobileServiceClient client)
+        public async Task<MobileServiceUser> LoginAsync(MobileServiceClient client, MobileServiceAuthenticationProvider provider)
         {
-            return await client.LoginAsync(context, MobileServiceAuthenticationProvider.Google, Constants.Constants.UrlScheme);
+            return await client.LoginAsync(context, provider, Constants.Constants.UrlScheme);
         }
     }
 }

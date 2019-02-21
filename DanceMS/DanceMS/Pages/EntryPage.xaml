@@ -11,8 +11,14 @@
             <Button
                 BackgroundColor="Teal"
                 BorderRadius="10"
-                Command="{Binding LoginCommand}"
-                Text="Login"
+                Command="{Binding LoginFacebook}"
+                Text="Login Facebook "
+                TextColor="White" />
+            <Button
+                BackgroundColor="Teal"
+                BorderRadius="10"
+                Command="{Binding LoginGoogle}"
+                Text="Login Google "
                 TextColor="White" />
         </StackLayout>
     </ContentPage.Content>

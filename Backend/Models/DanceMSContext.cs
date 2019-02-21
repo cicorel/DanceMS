@@ -3,9 +3,9 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using Microsoft.Azure.Mobile.Server;
 using Microsoft.Azure.Mobile.Server.Tables;
-using dancemsService.DataObjects;
+using DanceMSBackend.DataObjects;
 
-namespace dancemsService.Models
+namespace DanceMSBackend.Models
 {
     public class dancemsContext : DbContext
     {

@@ -5,6 +5,6 @@ namespace DanceMS.Abstractions
 {
     public interface ILoginProvider
     {
-        Task<MobileServiceUser> LoginAsync(MobileServiceClient client);
+        Task<MobileServiceUser> LoginAsync(MobileServiceClient client, MobileServiceAuthenticationProvider provider);
     }
 }
