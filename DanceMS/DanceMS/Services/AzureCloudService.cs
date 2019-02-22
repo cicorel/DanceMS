@@ -19,10 +19,10 @@ namespace DanceMS.Services
 
         public ICloudTable<T> GetTable<T>() where T : TableData => new AzureCloudTable<T>(client);
 
-        public async Task<MobileServiceUser> LoginAsync(MobileServiceAuthenticationProvider provider)
+        public async Task LoginAsync(MobileServiceAuthenticationProvider provider)
         {
             var loginProvider = DependencyService.Get<ILoginProvider>();
-            return await loginProvider.LoginAsync(client, provider);
+            await loginProvider.LoginAsync(client, provider);
         }
 
         List<AppServiceIdentity> identities = null;

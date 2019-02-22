@@ -7,7 +7,7 @@ namespace DanceMS.Abstractions
     public interface ICloudService
     {
         ICloudTable<T> GetTable<T>() where T : TableData;
-        Task<MobileServiceUser> LoginAsync(MobileServiceAuthenticationProvider provider);
+        Task LoginAsync(MobileServiceAuthenticationProvider provider);
         Task<AppServiceIdentity> GetIdentityAsync();
     }
 }

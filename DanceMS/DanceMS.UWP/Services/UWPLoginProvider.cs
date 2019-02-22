@@ -9,15 +9,14 @@ namespace DanceMS.UWP.Services
 {
     public class UWPLoginProvider : ILoginProvider
     {
-        public async Task<MobileServiceUser> LoginAsync(MobileServiceClient client, MobileServiceAuthenticationProvider provider)
+        public async Task LoginAsync(MobileServiceClient client, MobileServiceAuthenticationProvider provider)
         {
             try
             {
                 var concreteClient = client as MobileServiceClient; //extensionmethod we need is not on interface but on implementation class
 
                 LoginContinuation = concreteClient;
-                var user = await client.LoginAsync(provider, Constants.Constants.UrlScheme);
-                return user;
+                await client.LoginAsync(provider, Constants.Constants.UrlScheme);
             }
             catch (Exception e)
             {
@@ -28,7 +27,6 @@ namespace DanceMS.UWP.Services
             {
                 LoginContinuation = null;
             }
-            return null;
 
         }
 

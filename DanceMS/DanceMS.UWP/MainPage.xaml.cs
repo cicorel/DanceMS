@@ -15,9 +15,9 @@ namespace DanceMS.UWP
             LoadApplication(new DanceMS.App());
         }
 
-        public async Task<MobileServiceUser> LoginAsync(MobileServiceClient client, MobileServiceAuthenticationProvider provider)
+        public async Task LoginAsync(MobileServiceClient client, MobileServiceAuthenticationProvider provider)
         {
-            return await client.LoginAsync(provider, Constants.Constants.UrlScheme);
+            await client.LoginAsync(provider, Constants.Constants.UrlScheme);
         }
     }
 }
