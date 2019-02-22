@@ -62,6 +62,18 @@ namespace DanceMS.Droid.Services
             AccountStore.Save(account, "dancems");
         }
 
+        public void RemoveTokenFromSecureStore()
+        {
+            var accounts = AccountStore.FindAccountsForService("dancems");
+            if (accounts != null)
+            {
+                foreach (var useraccount in accounts)
+                {
+                    AccountStore.Delete(useraccount, "dancems");
+                }
+            }
+        }
+
         private bool IsTokenExpired(string token)
         {
             //Get just the JWT part of the token

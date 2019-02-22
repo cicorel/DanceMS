@@ -9,5 +9,6 @@ namespace DanceMS.Abstractions
         ICloudTable<T> GetTable<T>() where T : TableData;
         Task LoginAsync(MobileServiceAuthenticationProvider provider);
         Task<AppServiceIdentity> GetIdentityAsync();
+        Task LogoutAsync();
     }
 }

@@ -6,5 +6,6 @@ namespace DanceMS.Abstractions
     public interface ILoginProvider
     {
         Task LoginAsync(MobileServiceClient client, MobileServiceAuthenticationProvider provider);
+        void RemoveTokenFromSecureStore();
     }
 }

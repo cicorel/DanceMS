@@ -7,6 +7,7 @@ using Windows.Security.Credentials;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json.Linq;
+using System.Diagnostics;
 
 [assembly: Xamarin.Forms.Dependency(typeof(UWPLoginProvider))]
 namespace DanceMS.UWP.Services
@@ -65,7 +66,22 @@ namespace DanceMS.UWP.Services
 
         }
 
-        
+        public void RemoveTokenFromSecureStore()
+        {
+            try
+            {
+                // Check if the token is available within the password vault
+                var acct = PasswordVault.FindAllByResource("dancems").FirstOrDefault();
+                if (acct != null)
+                {
+                    PasswordVault.Remove(acct);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error retrieving existing token: {ex.Message}");
+            }
+        }
 
         public void ContinueLogin(Uri uri)
         {

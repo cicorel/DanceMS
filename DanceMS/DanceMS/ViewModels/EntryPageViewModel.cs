@@ -17,9 +17,10 @@ namespace DanceMS.ViewModels
             Title = "Task List";
         }
 
-        Command loginCmd;
-        public Command LoginFacebook => loginCmd ?? (loginCmd = new Command(async () => await ExecuteLoginCommand(MobileServiceAuthenticationProvider.Facebook).ConfigureAwait(false)));
-        public Command LoginGoogle => loginCmd ?? (loginCmd = new Command(async () => await ExecuteLoginCommand(MobileServiceAuthenticationProvider.Google).ConfigureAwait(false)));
+        Command loginCmdFB;
+        Command loginCmdGoogle;
+        public Command LoginFacebook => loginCmdFB ?? (loginCmdFB = new Command(async () => await ExecuteLoginCommand(MobileServiceAuthenticationProvider.Facebook).ConfigureAwait(false)));
+        public Command LoginGoogle => loginCmdGoogle ?? (loginCmdGoogle = new Command(async () => await ExecuteLoginCommand(MobileServiceAuthenticationProvider.Google).ConfigureAwait(false)));
 
         async Task ExecuteLoginCommand(MobileServiceAuthenticationProvider provider)
         {

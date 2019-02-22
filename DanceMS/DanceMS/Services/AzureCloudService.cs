@@ -3,6 +3,7 @@ using DanceMS.Models;
 using Microsoft.WindowsAzure.MobileServices;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -25,6 +26,29 @@ namespace DanceMS.Services
             await loginProvider.LoginAsync(client, provider);
         }
 
+        public async Task LogoutAsync()
+        {
+            if(client.CurrentUser == null || client.CurrentUser.MobileServiceAuthenticationToken == null)
+            {
+                return;
+            }
+
+            //Log out of the identity provider
+
+            //Invalidate the token on the mobile backend
+            var authUri = new Uri($"{client.MobileAppUri}/.auth/logout");
+            using ( var httpClient = new HttpClient() ) {
+                httpClient.DefaultRequestHeaders.Add("X-ZUMO-AUTH", client.CurrentUser.MobileServiceAuthenticationToken);
+                await httpClient.GetAsync(authUri);
+            }
+
+            //Remove the token from the cache
+            DependencyService.Get<ILoginProvider>().RemoveTokenFromSecureStore();
+
+            //Remove the token from the MobileServiceClient
+            await client.LogoutAsync();
+        }
+
         List<AppServiceIdentity> identities = null;
 
         public async Task<AppServiceIdentity> GetIdentityAsync()
@@ -43,5 +67,7 @@ namespace DanceMS.Services
                 return identities[0];
             return null;
         }
+
+
     }
 }
